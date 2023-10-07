@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppConstant {
   // field
   static String appName = "Cat project";
-  static Color bgColor = Colors.orange;
+  static Color bgColor = Color.fromARGB(255, 234, 158, 82);
 
   //method it's group
 

@@ -4,6 +4,8 @@ import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:ielproject/utility/app_constant.dart';
 import 'package:ielproject/utility/app_controller.dart';
+import 'package:ielproject/utility/app_service.dart';
+import 'package:ielproject/utility/app_snackbar.dart';
 import 'package:ielproject/widgets/widget_button.dart';
 import 'package:ielproject/widgets/widget_form.dart';
 import 'package:ielproject/widgets/widget_icon_button.dart';
@@ -19,6 +21,9 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   AppController appController = Get.put(AppController());
+
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +45,9 @@ class _AuthenState extends State<Authen> {
                         const SizedBox(height: 100),
                         displayLogoAppName(),
                         const SizedBox(height: 20),
-                        const WidgetForm(
+                        WidgetForm(
                           hint: "User",
+                          textEditingController: userController,
                           suffixIcon: Icon(Icons.person),
                         ),
                         const SizedBox(height: 5),
@@ -50,7 +56,25 @@ class _AuthenState extends State<Authen> {
                             width: 250,
                             child: WidgetButton(
                                 label: "Login",
-                                pressFun: () {},
+                                pressFun: () {
+                                  if ((userController.text.isEmpty) ||
+                                      (passwordController.text.isEmpty)) {
+                                    //Have space
+                                    AppSnackBar(
+                                            message: "กรุณากรอก",
+                                            title: "ผิดพลาด")
+                                        .errorSnackbar();
+                                  } else {
+                                    //Have space
+                                    AppSnackBar(
+                                            message: "ล็อกอินสำเร็จ",
+                                            title: "ผ่าน")
+                                        .normalSnackbar();
+                                    AppService().checkAuthen(
+                                        uers: userController.text,
+                                        password: passwordController.text);
+                                  }
+                                },
                                 gfButtonShape: GFButtonShape.pills,
                                 gfButtonType: GFButtonType.solid,
                                 color: Colors.deepOrange.shade300))
@@ -70,6 +94,7 @@ class _AuthenState extends State<Authen> {
     return Obx(() {
       return WidgetForm(
         hint: "Password",
+        textEditingController: passwordController,
         obscureText: appController.redEye.value,
         suffixIcon: WidgetIconButton(
           iconData: appController.redEye.value
