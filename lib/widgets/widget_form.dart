@@ -21,10 +21,16 @@ class WidgetForm extends StatelessWidget {
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
           filled: true,
+          fillColor: Colors.grey.shade200,
           border: InputBorder.none,
-          //  OutlineInputBorder(
-          //     borderSide: BorderSide(color: Colors.black54),
-          //     borderRadius: BorderRadius.circular(30)),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(30),
+          ),
           hintText: hint,
           suffixIcon: suffixIcon),
     );
