@@ -5,14 +5,16 @@ class WidgetImageAsset extends StatelessWidget {
   const WidgetImageAsset({
     Key? key,
     this.sizeWidth,
+    this.pathImage,
   }) : super(key: key);
 
   final double? sizeWidth;
+  final String? pathImage;
 
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'images/logo.png',
+      pathImage ?? 'images/logo.png',
       width: sizeWidth,
     );
   }

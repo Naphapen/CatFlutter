@@ -70,4 +70,13 @@ class AppService {
       // AppSnackBar(message: 'เกิดข้อผิดพลาด', title: 'Error').errorSnackbar();
     }
   }
+
+  Future<void> insertNewData({required Map<String, dynamic> map}) async {
+    String url = 'https://dev-api-ismart.interexpress.co.th/Test/insert-data';
+    Dio dio = Dio();
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        'Bearer ${appController.tokenModels.last.accessToken}';
+    await dio.post(url, data: map);
+  }
 }

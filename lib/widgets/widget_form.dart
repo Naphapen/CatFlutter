@@ -8,18 +8,21 @@ class WidgetForm extends StatelessWidget {
     this.suffixIcon,
     this.obscureText,
     this.textEditingController,
+    this.ladelWidget,
   }) : super(key: key);
 
   final String? hint;
   final Widget? suffixIcon;
   final bool? obscureText;
   final TextEditingController? textEditingController;
+  final Widget? ladelWidget;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textEditingController,
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
+          label: ladelWidget,
           filled: true,
           fillColor: Colors.grey.shade200,
           // border: InputBorder.none,

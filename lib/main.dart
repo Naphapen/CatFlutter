@@ -40,9 +40,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      //  home: Authen(),
+      debugShowCheckedModeBanner: false,
       getPages: getPages,
       initialRoute: firstPage,
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+        appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.orange,
+            foregroundColor: Colors.black,
+            elevation: 0),
+        scaffoldBackgroundColor: Colors.white,
+      ),
     );
   }
 }
