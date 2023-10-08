@@ -52,32 +52,18 @@ class _AuthenState extends State<Authen> {
                         ),
                         const SizedBox(height: 5),
                         passWordWidget(),
-                        SizedBox(
-                            width: 250,
-                            child: WidgetButton(
-                                label: "Login",
-                                pressFun: () {
-                                  if ((userController.text.isEmpty) ||
-                                      (passwordController.text.isEmpty)) {
-                                    //Have space
-                                    AppSnackBar(
-                                            message: "กรุณากรอก",
-                                            title: "ผิดพลาด")
-                                        .errorSnackbar();
-                                  } else {
-                                    //Have space
-                                    AppSnackBar(
-                                            message: "ล็อกอินสำเร็จ",
-                                            title: "ผ่าน")
-                                        .normalSnackbar();
-                                    AppService().checkAuthen(
-                                        uers: userController.text,
-                                        password: passwordController.text);
-                                  }
-                                },
-                                gfButtonShape: GFButtonShape.pills,
-                                gfButtonType: GFButtonType.solid,
-                                color: Colors.deepOrange.shade300))
+                        Obx(() {
+                          return CheckboxListTile(
+                              value: appController.rememberMe.value,
+                              title: const WidgetText(
+                                data: 'Remember Me',
+                              ),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              onChanged: (value) {
+                                appController.rememberMe.value = value!;
+                              });
+                        }),
+                        loginbutton()
                       ],
                     ),
                   ),
@@ -88,6 +74,32 @@ class _AuthenState extends State<Authen> {
         ),
       ),
     );
+  }
+
+  SizedBox loginbutton() {
+    return SizedBox(
+        width: 250,
+        child: WidgetButton(
+            label: "Login",
+            pressFun: () {
+              if ((userController.text.isEmpty) ||
+                  (passwordController.text.isEmpty)) {
+                //Have space
+                AppSnackBar(
+                        message: "กรุณากรอก ชื่อผู้ใช้ หรือ รหัสผ่าน",
+                        title: "ผิดพลาด")
+                    .errorSnackbar();
+              } else {
+                //Have space
+
+                AppService().checkAuthen(
+                    uers: userController.text,
+                    password: passwordController.text);
+              }
+            },
+            gfButtonShape: GFButtonShape.pills,
+            gfButtonType: GFButtonType.solid,
+            color: Colors.deepOrange.shade300));
   }
 
   Obx passWordWidget() {

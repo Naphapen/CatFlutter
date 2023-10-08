@@ -22,7 +22,7 @@ class WidgetForm extends StatelessWidget {
       decoration: InputDecoration(
           filled: true,
           fillColor: Colors.grey.shade200,
-          border: InputBorder.none,
+          // border: InputBorder.none,
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade200),
             borderRadius: BorderRadius.circular(30),
