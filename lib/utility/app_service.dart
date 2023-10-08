@@ -76,7 +76,14 @@ class AppService {
     Dio dio = Dio();
     dio.options.headers['Content-Type'] = 'application/json';
     dio.options.headers['Authorization'] =
-        'Bearer ${appController.tokenModels.last.accessToken}';
-    await dio.post(url, data: map);
+        "Bearer ${appController.tokenModels.last.accessToken}";
+
+    try {
+      var res = await dio.post(url, data: map);
+
+      AppSnackBar(title: 'Success', message: "Save").normalSnackbar();
+    } catch (e) {
+      AppSnackBar(title: 'Error', message: "Save Error").normalSnackbar();
+    }
   }
 }

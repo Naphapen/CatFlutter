@@ -138,9 +138,9 @@ class _AddNewDataState extends State<AddNewData> {
                         Map<String, dynamic> map = {};
                         map['EmployeeIDCard'] = empIdCard;
                         map['EmployeeNo'] = empNo;
-                        map['EmployeeTitleName'] = nameController;
-                        map['EmployeeEmail'] = eMailController;
-                        map['EmployeeMobileNo'] = phoneController;
+                        map['EmployeeTitleName'] = nameController.text;
+                        map['EmployeeEmail'] = eMailController.text;
+                        map['EmployeeMobileNo'] = phoneController.text;
 
                         AppService().insertNewData(map: map);
                       },
