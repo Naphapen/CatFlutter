@@ -16,6 +16,7 @@ class AppDialog {
     Get.dialog(
       barrierDismissible: false,
       AlertDialog(
+        scrollable: true,
         icon: WidgetImageAsset(
           pathImage: pathImage,
           sizeWidth: sizeWidth,

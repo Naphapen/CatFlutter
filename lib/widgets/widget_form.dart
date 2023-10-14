@@ -9,6 +9,7 @@ class WidgetForm extends StatelessWidget {
     this.obscureText,
     this.textEditingController,
     this.ladelWidget,
+    this.changeFunc,
   }) : super(key: key);
 
   final String? hint;
@@ -16,26 +17,29 @@ class WidgetForm extends StatelessWidget {
   final bool? obscureText;
   final TextEditingController? textEditingController;
   final Widget? ladelWidget;
+  final Function(String)? changeFunc;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: textEditingController,
       obscureText: obscureText ?? false,
+      onChanged: changeFunc,
       decoration: InputDecoration(
-          label: ladelWidget,
-          filled: true,
-          fillColor: Colors.grey.shade200,
-          // border: InputBorder.none,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade200),
-            borderRadius: BorderRadius.circular(30),
-          ),
-          hintText: hint,
-          suffixIcon: suffixIcon),
+        label: ladelWidget,
+        filled: true,
+        fillColor: Colors.grey.shade200,
+        // border: InputBorder.none,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        hintText: hint,
+        suffixIcon: suffixIcon,
+      ),
     );
   }
 }

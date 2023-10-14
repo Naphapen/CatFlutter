@@ -1,7 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:ielproject/main.dart';
+import 'package:ielproject/models/data_model.dart';
 import 'package:ielproject/models/token_mode.dart';
+import 'package:ielproject/states/authen.dart';
 import 'package:ielproject/states/main_home.dart';
 import 'package:ielproject/utility/app_controller.dart';
 import 'package:ielproject/utility/app_snackbar.dart';
@@ -34,12 +38,14 @@ class AppService {
         data['uers'] = uers;
         data['password'] = password;
 
-        await GetStorage().write('data', data);
+        await GetStorage().write('data', data).then((value) {
+          Get.offAll(const MainHome());
+        });
+      } else {
+        Get.offAll(const Authen());
       }
       AppSnackBar(title: 'Login success', message: "${tokenModel.employeeNo}")
           .normalSnackbar();
-
-      Get.offAll(const MainHome());
     } on Exception catch (e) {
       AppSnackBar(message: 'เกิดข้อผิดพลาด', title: 'Error').errorSnackbar();
     }
@@ -85,5 +91,44 @@ class AppService {
     } catch (e) {
       AppSnackBar(title: 'Error', message: "Save Error").normalSnackbar();
     }
+  }
+
+  //https://dev-api-ismart.interexpress.co.th/Test/list-all
+  Future<void> processReadAllData() async {
+    String url = 'https://dev-api-ismart.interexpress.co.th/Test/list-all';
+    Dio dio = Dio();
+
+    if (appController.tokenModels.isEmpty) {
+      var data = await GetStorage().read('data');
+      await findTokenModel(uers: data['uers'], password: data['password']);
+    }
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        "Bearer ${appController.tokenModels.last.accessToken}";
+
+    try {
+      await dio.get(url).then((value) {
+        var result = value.data;
+        for (var element in result) {
+          DataModel dataModel = DataModel.fromMap(element);
+          appController.dataModels.add(dataModel);
+          print(appController.dataModels);
+        }
+      });
+
+      //  print("--> $res");
+    } catch (e) {
+      // print(e);
+      AppSnackBar(title: 'Error', message: "Get Data Error Pls Login ")
+          .errorSnackbar();
+      GetStorage().remove('data');
+      Get.offAllNamed('/authen');
+    }
+  }
+
+  Future<void> updateData({required Map<String, dynamic> map}) async {
+    String url = 'https://dev-api-ismart.interexpress.co.th/Test/update-data';
+    Dio dio = Dio();
   }
 }

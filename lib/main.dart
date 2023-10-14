@@ -19,7 +19,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init().then((value) async {
     var data = await GetStorage().read("data");
-    print("----------$data");
+   // print("----------$data");
 
     if (data == null) {
       firstPage = '/authen';
