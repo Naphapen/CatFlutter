@@ -162,17 +162,12 @@ class _EditDataState extends State<EditData> {
 
                           Map<String, dynamic> map = {};
                           map['Id'] = widget.dataModel.id;
-                          map['EmployeeNo'] = empNo;
+                          // map['EmployeeNo'] = empNo;
                           map['EmployeeTitleName'] = nameController.text;
                           map['EmployeeEmail'] = eMailController.text;
                           map['EmployeeMobileNo'] = phoneController.text;
-                         // print("edit --> $map");
-                         AppService().updateData(map: map);
-
-                          AppSnackBar(
-                                  title: 'แจ้งเตือน',
-                                  message: 'แก้ไข้ เรียบร้อย')
-                              .normalSnackbar();
+                          // print("edit --> $map");
+                          AppService().updateData(map: map);
                         } else {
                           AppSnackBar(
                                   title: 'แจ้งเตือน',

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:ielproject/bodys/list_data.dart';
 import 'package:ielproject/main.dart';
 import 'package:ielproject/models/data_model.dart';
 import 'package:ielproject/models/token_mode.dart';
@@ -86,7 +87,8 @@ class AppService {
 
     try {
       var res = await dio.post(url, data: map);
-
+      AppService().processReadAllData();
+      Get.back();
       AppSnackBar(title: 'Success', message: "Save").normalSnackbar();
     } catch (e) {
       AppSnackBar(title: 'Error', message: "Save Error").normalSnackbar();
@@ -95,6 +97,7 @@ class AppService {
 
   //https://dev-api-ismart.interexpress.co.th/Test/list-all
   Future<void> processReadAllData() async {
+    appController.load(true);
     String url = 'https://dev-api-ismart.interexpress.co.th/Test/list-all';
     Dio dio = Dio();
 
@@ -113,7 +116,8 @@ class AppService {
         for (var element in result) {
           DataModel dataModel = DataModel.fromMap(element);
           appController.dataModels.add(dataModel);
-          print(appController.dataModels);
+
+          appController.load(false);
         }
       });
 
@@ -130,5 +134,33 @@ class AppService {
   Future<void> updateData({required Map<String, dynamic> map}) async {
     String url = 'https://dev-api-ismart.interexpress.co.th/Test/update-data';
     Dio dio = Dio();
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        "Bearer ${appController.tokenModels.last.accessToken}";
+
+    await dio.put(url, data: map).then((value) {
+      AppService().processReadAllData();
+      Get.back();
+      AppSnackBar(title: 'แจ้งเตือน', message: 'แก้ไข้ เรียบร้อย')
+          .normalSnackbar();
+    }).catchError((onError) {});
+  }
+
+  Future<void> deleteData({required int id}) async {
+    String url = 'https://dev-api-ismart.interexpress.co.th/Test/delete-data';
+    Dio dio = Dio();
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        "Bearer ${appController.tokenModels.last.accessToken}";
+
+    Map<String, dynamic> map = {};
+    map['id'] = id;
+
+    await dio.delete(url, data: map).then((value) {
+      AppService().processReadAllData();
+      Get.back();
+      AppSnackBar(title: 'แจ้งเตือน', message: 'ลบ เรียบร้อย').normalSnackbar();
+    }).catchError((onError) {});
   }
 }

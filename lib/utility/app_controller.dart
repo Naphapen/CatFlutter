@@ -8,4 +8,5 @@ class AppController extends GetConnect {
   RxList<TokenModel> tokenModels = <TokenModel>[].obs;
   RxInt indexBody = 0.obs;
   RxList<DataModel> dataModels = <DataModel>[].obs;
+  RxBool load = true.obs;
 }
