@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ielproject/bodys/list_data.dart';
@@ -9,7 +12,10 @@ import 'package:ielproject/models/token_mode.dart';
 import 'package:ielproject/states/authen.dart';
 import 'package:ielproject/states/main_home.dart';
 import 'package:ielproject/utility/app_controller.dart';
+import 'package:ielproject/utility/app_dialog.dart';
 import 'package:ielproject/utility/app_snackbar.dart';
+import 'package:ielproject/widgets/widget_button.dart';
+import 'package:ielproject/widgets/widget_text.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -162,5 +168,24 @@ class AppService {
       Get.back();
       AppSnackBar(title: 'แจ้งเตือน', message: 'ลบ เรียบร้อย').normalSnackbar();
     }).catchError((onError) {});
+  }
+
+  Future<void> processFindPosition() async {
+    bool locationService = await Geolocator.isLocationServiceEnabled();
+    if (locationService) {
+      // open
+    } else {
+// off
+      AppDialog().normalDialog(
+        title: 'Notify',
+        contentWidget: WidgetText(data: "Pls Open Location"),
+        secondActionWidget: WidgetButton(
+            label: 'Open',
+            pressFun: () async {
+              Geolocator.openLocationSettings();
+              exit(0);
+            }),
+      );
+    }
   }
 }

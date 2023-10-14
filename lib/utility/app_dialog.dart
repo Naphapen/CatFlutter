@@ -11,6 +11,7 @@ class AppDialog {
     String? pathImage,
     Widget? contentWidget,
     Widget? actionWidget,
+    Widget? secondActionWidget,
     double? sizeWidth,
   }) {
     Get.dialog(
@@ -25,20 +26,22 @@ class AppDialog {
         content: contentWidget,
         actions: [
           actionWidget ?? const SizedBox(),
-          actionWidget == null
-              ? WidgetButton(
-                  label: 'OK',
-                  gfButtonType: GFButtonType.transparent,
-                  pressFun: () {
-                    Get.back();
-                  })
-              : WidgetButton(
-                  label: 'Cancel',
-                  gfButtonType: GFButtonType.outline,
-                  color: Colors.orange.shade400,
-                  pressFun: () {
-                    Get.back();
-                  }),
+          secondActionWidget ??
+              (actionWidget == null
+                  ? WidgetButton(
+                      label: 'OK',
+                      gfButtonType: GFButtonType.transparent,
+                      pressFun: () {
+                        Get.back();
+                      })
+                  : WidgetButton(
+                      label: 'Cancel',
+                      gfButtonType: GFButtonType.outline,
+                      color: Colors.orange.shade400,
+                      pressFun: () {
+                        Get.back();
+                      },
+                    )),
         ],
       ),
     );
