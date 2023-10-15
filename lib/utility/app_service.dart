@@ -172,8 +172,31 @@ class AppService {
 
   Future<void> processFindPosition() async {
     bool locationService = await Geolocator.isLocationServiceEnabled();
+    LocationPermission locationPermission;
+
     if (locationService) {
       // open
+      locationPermission = await Geolocator.checkPermission();
+      if (locationPermission == LocationPermission.deniedForever) {
+        //ไม่อนุญาต
+        dialogPermission();
+      } else {
+        //away , one ,denied
+        if (locationPermission == LocationPermission.denied) {
+          locationPermission = await Geolocator.requestPermission();
+
+          if ((locationPermission != LocationPermission.always) &&
+              (locationPermission != LocationPermission.whileInUse)) {
+            dialogPermission();
+          } else {
+            Position position = await Geolocator.getCurrentPosition();
+            appController.position.add(position);
+          }
+        } else {
+          Position position = await Geolocator.getCurrentPosition();
+          appController.position.add(position);
+        }
+      }
     } else {
 // off
       AppDialog().normalDialog(
@@ -187,5 +210,17 @@ class AppService {
             }),
       );
     }
+  }
+
+  Future<void> dialogPermission() async {
+    AppDialog().normalDialog(
+      title: 'Open Permission',
+      secondActionWidget: WidgetButton(
+          label: 'label',
+          pressFun: () {
+            Geolocator.openAppSettings();
+            exit(0);
+          }),
+    );
   }
 }
